@@ -2,7 +2,7 @@ fun main() {
     fun getData(input: List<String>): List<List<Int>> = input.joinToString("\n")
         .split("\n\n")
         .map { elf ->
-            elf.split("\n")
+            elf.lines()
                 .map { it.toInt() }
         }
 

@@ -1,10 +1,10 @@
 class Day03 : Day<Int>(157, 70) {
-    fun <T> List<T>.splitInHalf(): Pair<List<T>, List<T>> {
+    private fun <T> List<T>.splitInHalf(): Pair<List<T>, List<T>> {
         check(size % 2 == 0) { "not an even size" }
         return take(size / 2) to drop(size / 2)
     }
 
-    fun Char.getPriority(): Int = when (this) {
+    private fun Char.getPriority(): Int = when (this) {
         in 'a'..'z' -> code - 'a'.code + 1
         in 'A'..'Z' -> code - 'A'.code + 1 + 26
         else -> error("invalid char")

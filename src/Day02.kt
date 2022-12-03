@@ -39,21 +39,20 @@ enum class Shape(val primary: Char, val secondary: Char, private val points: Int
     SCISSORS('C', 'Z', 3, 'B'),
     ;
 
-    fun pointsAgainst(shape: Shape): Int {
-        val pointsResult = if (shape.primary == winnerAgainstPrimary) {
-            6
-        } else if (shape == this) {
-            3
-        } else {
-            0
-        }
-        return pointsResult + points
+    private val winsAgainst by lazy { values().first { it.primary == winnerAgainstPrimary } }
+    private val drawsAgainst = this
+    private val losesAgainst by lazy { values().first { it !in listOf(winsAgainst, drawsAgainst) } }
+
+    fun pointsAgainst(shape: Shape) = points + when (shape) {
+        winsAgainst -> 6
+        drawsAgainst -> 3
+        else -> 0
     }
 
     fun shapeForPart2(c: Char): Shape = when(c) {
-        'X' -> byChar(winnerAgainstPrimary) // WIN - so opponent should LOSE
-        'Y' -> this // DRAW
-        'Z' -> values().first { it !in listOf(this, byChar(winnerAgainstPrimary))} // LOSE - so opponent should WIN
+        'X' -> winsAgainst
+        'Y' -> drawsAgainst
+        'Z' -> losesAgainst
         else -> error("invalid char")
     }
 

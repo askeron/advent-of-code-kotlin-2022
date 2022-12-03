@@ -1,10 +1,10 @@
-fun main() {
+class Day02 : Day<Int>(15, 12) {
     fun String.singleChar(): Char {
         assert(this.length == 1) { "not a single char" }
         return toCharArray()[0]
     }
 
-    fun part1(input: List<String>): Int {
+    override fun part1(input: List<String>): Int {
         return input
             .asSequence()
             .map { it.split(" ").map { Shape.byChar(it.singleChar()) } }
@@ -13,7 +13,7 @@ fun main() {
             .sum()
     }
 
-    fun part2(input: List<String>): Int {
+    override fun part2(input: List<String>): Int {
         return input
             .asSequence()
             .map { it.split(" ").map { it.singleChar() } }
@@ -22,15 +22,6 @@ fun main() {
             .map { it.second.pointsAgainst(it.first) }
             .sum()
     }
-
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day02_test")
-    val input = readInput("Day02")
-    assertEquals(15, part1(testInput))
-    println(part1(input))
-    assertEquals(12, part2(testInput))
-    println(part2(input))
-
 }
 
 enum class Shape(val primary: Char, val secondary: Char, private val points: Int, private val winnerAgainstPrimary: Char) {

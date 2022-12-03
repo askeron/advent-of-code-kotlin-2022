@@ -27,7 +27,7 @@ fun <T> List<T>.allDistinct() = this.size == this.distinct().size
 fun <T : Comparable<T>> List<T>.isSorted() = this == this.sorted()
 
 fun <T> List<T>.singleValue(): T {
-    assert(size == 1)
+    check(size == 1) { "list has not 1 but $size items" }
     return get(0)
 }
 
@@ -84,4 +84,4 @@ data class Point(val x: Int, val y: Int) {
     val neighbours by lazy { neighboursWithItself.filterNot { it == this } }
 }
 
-// helpers from 2021 START
+// helpers from 2021 END

@@ -4,7 +4,11 @@ fun main() {
         return take(size / 2) to drop(size / 2)
     }
 
-    fun Char.getPriority(): Int = code - (if (code > 96) 96 else (64-26))
+    fun Char.getPriority(): Int = when (this) {
+        in 'a'..'z' -> code - 'a'.code + 1
+        in 'A'..'Z' -> code - 'A'.code + 1 + 26
+        else -> error("invalid char")
+    }
 
     fun part1(input: List<String>): Int {
         return input.map { it.toCharArray().toList().splitInHalf() }

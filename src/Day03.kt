@@ -4,25 +4,21 @@ class Day03 : Day<Int>(157, 70) {
         return take(size / 2) to drop(size / 2)
     }
 
-    private fun Char.getPriority(): Int = when (this) {
-        in 'a'..'z' -> code - 'a'.code + 1
-        in 'A'..'Z' -> code - 'A'.code + 1 + 26
-        else -> error("invalid char")
-    }
+    private val priorities: Map<Char, Int> = (('a'..'z')+('A'..'Z')).mapIndexed { i, c -> c to i+1 }.toMap()
 
     override fun part1(input: List<String>): Int {
         return input.map { it.toCharArray().toList().splitInHalf() }
-            .map { pair -> pair.first.filter { it in pair.second } }
+            .map { (a, b) -> a.intersect(b) }
             .map { it.distinct().singleValue() }
-            .sumOf { it.getPriority() }
+            .sumOf { priorities[it]!! }
     }
 
     override fun part2(input: List<String>): Int {
         return input.map { it.toCharArray().toList() }
             .chunked(3)
-            .map { group -> group[0].filter { it in group[1] && it in group[2] } }
+            .map { (a,b,c) -> a.intersect(b).intersect(c) }
             .map { it.distinct().singleValue() }
-            .sumOf { it.getPriority() }
+            .sumOf { priorities[it]!! }
     }
 }
 

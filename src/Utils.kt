@@ -31,6 +31,11 @@ fun <T> List<T>.singleValue(): T {
     return get(0)
 }
 
+fun <T> List<T>.exactPair(): Pair<T, T> {
+    check(size == 2) { "list has not 2 but $size items" }
+    return get(0) to get(1)
+}
+
 infix fun <A, B, C> Pair<A, B>.toTriple(that: C): Triple<A, B, C> = Triple(first, second, that)
 
 fun <T> T.transform(times: Int, transform: (T) -> T): T {

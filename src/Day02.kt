@@ -24,13 +24,13 @@ class Day02 : Day<Int>(15, 12) {
     }
 }
 
-enum class Shape(val primary: Char, val secondary: Char, private val points: Int, private val winnerAgainstPrimary: Char) {
-    ROCK('A', 'X', 1, 'C'),
-    PAPER('B', 'Y', 2, 'A'),
-    SCISSORS('C', 'Z', 3, 'B'),
+enum class Shape(val primary: Char, val secondary: Char, private val points: Int, private val winsAgainstSupplier: () -> Shape) {
+    ROCK('A', 'X', 1, { SCISSORS }),
+    PAPER('B', 'Y', 2, { ROCK }),
+    SCISSORS('C', 'Z', 3, { PAPER }),
     ;
 
-    private val winsAgainst by lazy { values().first { it.primary == winnerAgainstPrimary } }
+    private val winsAgainst by lazy { winsAgainstSupplier.invoke() }
     private val drawsAgainst = this
     private val losesAgainst by lazy { values().first { it !in listOf(winsAgainst, drawsAgainst) } }
 

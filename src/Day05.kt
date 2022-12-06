@@ -15,18 +15,12 @@ class Day05 : Day<String>("CMZ", "MCD") {
     data class Move(val count: Int, val from: Int, val to: Int)
 
     private fun parseInput(input: List<String>): Pair<State, List<Move>> {
-        return input.joinToString("\n")
-            .split("\n\n")
-            .map { it.lines() }
-            .exactPair()
-            .let { (x,y) ->
-                val rows = x.dropLast(1).map { it.chunked(4).map { it.elementAt(1) } }
-                val cols = rows.turnMatrix().map { it.filter { it != ' ' }.reversed() }
-                val moves = y.map { it.split(' ') }
-                    .map { it[1].toInt() to it[3].toInt() toTriple it[5].toInt() }
-                    .map { (a,b,c) -> Move(a, b, c) }
-                State(cols) to moves
-            }
+        val rows = input.takeWhile { it.isNotEmpty() }.dropLast(1).map { it.chunked(4).map { it.elementAt(1) } }
+        val cols = rows.turnMatrix().map { it.filter { it != ' ' }.reversed() }
+
+        val moves = input.takeLastWhile { it.isNotEmpty() }.map { it.split(' ') }
+            .map { Move(it[1].toInt(), it[3].toInt(), it[5].toInt()) }
+        return State(cols) to moves
     }
 
     private fun partCommon(input: List<String>, moveFunction: (State, Move) -> Unit): String {

@@ -1,6 +1,6 @@
 class Day05 : Day<String>("CMZ", "MCD") {
-    class State(initialRows: List<List<Char>>) {
-        private val cols = initialRows.map { it.toMutableList() }
+    class State(initialCols: List<List<Char>>) {
+        private val cols = initialCols.map { it.toMutableList() }
         fun movePart1(move: Move) {
             repeat(move.count) { cols[move.to - 1] += cols[move.from - 1].removeLast() }
         }

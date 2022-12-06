@@ -61,6 +61,46 @@ fun List<String>.IntMatrixToPointMap() = flatMapIndexed { x, s ->
 
 fun Int.gaussSum() = (this * (this + 1)) / 2
 
+fun <T> List<T>.getAllDistinctCombinations(): List<List<T>> {
+    var result = this.map { listOf(it) }
+    repeat(this.size - 1) {
+        result = result.zipInList(this).filter { it.allDistinct() }
+    }
+    return result
+}
+
+fun <T> List<List<T>>.zipInList(list: List<T>): List<List<T>> = this.flatMap { x -> list.map { x.plus(it) } }
+
+fun List<Int>.toIntByDigits(): Int {
+    assert(all { it in 0..9 })
+    var result = 0
+    forEach {
+        result = result * 10 + it
+    }
+    return result
+}
+
+fun <T> List<T>.nonUnique() = this.groupingBy { it }.eachCount().filter { it.value > 1 }
+
+fun <T> List<List<T>>.turnMatrix(): List<List<T>> = (0 until this[0].size).map { i -> this.map { it[i] } }
+
+fun <K, V> Map<K, V>.inverted() = entries.associate{(k,v)-> v to k}
+
+fun Iterable<Point>.mirror() = map { Point(it.y, it.x) }.toList()
+
+fun Iterable<Point>.matrixString(pointChar: Char, noPointChar: Char): String =
+    matrixString { x, y -> if (contains(Point(x, y))) pointChar else noPointChar }
+
+fun Iterable<Point>.matrixString(charFunction: (Int, Int) -> Char): String {
+    return (0..this.maxOf { it.x }).joinToString("\n") { x ->
+        (0..this.maxOf { it.y }).joinToString("") { y ->
+            charFunction.invoke(x, y).toString()
+        }
+    }
+}
+
+fun Map<Point, Int>.matrixString() = keys.matrixString { x, y -> this[Point(x,y)]!!.digitToChar()}
+
 data class Point(val x: Int, val y: Int) {
     operator fun unaryMinus() = Point(-x, -y)
     operator fun plus(b: Point) = Point(x + b.x, y + b.y)

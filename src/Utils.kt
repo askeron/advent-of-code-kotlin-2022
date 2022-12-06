@@ -82,11 +82,8 @@ fun List<Int>.toIntByDigits(): Int {
 
 fun <T> List<T>.nonUnique() = this.groupingBy { it }.eachCount().filter { it.value > 1 }
 
-fun <T> MutableList<T>.removeLast(n: Int): List<T> {
-    val result = mutableListOf<T>()
-    repeat(n) { result += removeLast() }
-    return result.toList().reversed()
-}
+fun <T> MutableList<T>.removeLast(n: Int): List<T> = mutableListOf<T>()
+    .also { repeat(n) { _ -> it += removeLast() } }.toList().reversed()
 
 fun <T> List<List<T>>.turnMatrix(): List<List<T>> = (0 until this[0].size).map { i -> this.map { it[i] } }
 

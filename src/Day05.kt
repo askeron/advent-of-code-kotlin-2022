@@ -20,8 +20,7 @@ class Day05 : Day<String>("CMZ", "MCD") {
             .map { it.lines() }
             .exactPair()
             .let { (x,y) ->
-                val colCount = x.last().trim().split(' ').last().toInt()
-                val rows = x.dropLast(1).map { line -> (0 until colCount).map { line.elementAt(4 * it + 1) } }
+                val rows = x.dropLast(1).map { it.chunked(4).map { it.elementAt(1) } }
                 val cols = rows.turnMatrix().map { it.filter { it != ' ' }.reversed() }
                 val moves = y.map { it.split(' ') }
                     .map { it[1].toInt() to it[3].toInt() toTriple it[5].toInt() }

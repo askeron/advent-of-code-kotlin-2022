@@ -3,10 +3,8 @@ class Day06 : Day<Int>(7, 19, 1142, 2803) {
         return input[0]
     }
 
-    private fun String.indexOfFirstDistinctChars(count: Int) = toCharArray()
-        .toList()
-        .windowed(count)
-        .indexOfFirst { it.allDistinct() } + count - 1
+    private fun String.indexOfFirstDistinctChars(count: Int) = windowed(count)
+        .indexOfFirst { it.toList().allDistinct() } + count - 1
 
     override fun part1(input: List<String>): Int {
         return parseInput(input).indexOfFirstDistinctChars(4) + 1

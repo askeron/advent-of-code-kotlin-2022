@@ -1,4 +1,4 @@
-class Day05 : Day<String>("CMZ", "MCD") {
+class Day05 : Day<String>("CMZ", "MCD", "CNSZFDVLJ", "QNDWLMGNS") {
     class State(initialCols: List<List<Char>>) {
         private val cols = initialCols.map { it.toMutableList() }
         fun movePart1(move: Move) {

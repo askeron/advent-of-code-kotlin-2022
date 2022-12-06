@@ -1,4 +1,4 @@
-class Day01 : Day<Int>(24000, 45000) {
+class Day01 : Day<Int>(24000, 45000, 68802, 205370) {
     fun getData(input: List<String>): List<List<Int>> = input.joinToString("\n")
         .split("\n\n")
         .map { elf ->

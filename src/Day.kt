@@ -1,4 +1,9 @@
-abstract class Day<T>(private val expectedPart1: T, private val expectedPart2: T) {
+abstract class Day<T>(
+    private val expectedTestPart1: T,
+    private val expectedTestPart2: T,
+    private val expectedPart1: T,
+    private val expectedPart2: T,
+) {
     private val dayString by lazy { javaClass.name }
 
     private val testInput by lazy { readInput("${dayString}_test") }
@@ -13,10 +18,9 @@ abstract class Day<T>(private val expectedPart1: T, private val expectedPart2: T
         val input = readInput(dayString)
 
         println(dayString)
-        assertEquals(expectedPart1, part1(testInput))
-        println(part1(input))
-        assertEquals(expectedPart2, part2(testInput))
-        println(part2(input))
-        println()
+        assertEquals(expectedTestPart1, part1(testInput))
+        assertEquals(expectedPart1, part1(input))
+        assertEquals(expectedTestPart2, part2(testInput))
+        assertEquals(expectedPart2, part2(input))
     }
 }

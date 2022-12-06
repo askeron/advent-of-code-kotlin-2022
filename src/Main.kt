@@ -8,8 +8,7 @@ fun main() {
         }
     }
 
-    (25 downTo 1).asSequence()
+    (1..25).asSequence()
         .mapNotNull { getDayInstance(it) }
-        .first()
-        .run()
+        .forEach { it.run() }
 }

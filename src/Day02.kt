@@ -1,4 +1,4 @@
-class Day02 : Day<Int>(15, 12) {
+class Day02 : Day<Int>(15, 12, 13565, 12424) {
     fun String.singleChar(): Char {
         assert(this.length == 1) { "not a single char" }
         return toCharArray()[0]

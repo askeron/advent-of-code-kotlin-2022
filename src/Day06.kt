@@ -1,4 +1,4 @@
-class Day06 : Day<Int>(7, 19) {
+class Day06 : Day<Int>(7, 19, 1142, 2803) {
     private fun parseInput(input: List<String>): String {
         return input[0]
     }

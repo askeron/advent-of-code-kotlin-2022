@@ -1,4 +1,4 @@
-class Day03 : Day<Int>(157, 70) {
+class Day03 : Day<Int>(157, 70, 7428, 2650) {
     private fun <T> List<T>.splitInHalf(): Pair<List<T>, List<T>> {
         check(size % 2 == 0) { "not an even size" }
         return take(size / 2) to drop(size / 2)

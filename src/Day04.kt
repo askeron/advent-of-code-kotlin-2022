@@ -1,4 +1,4 @@
-class Day04 : Day<Int>(2, 4) {
+class Day04 : Day<Int>(2, 4, 588, 911) {
 
     private fun parseInput(input: List<String>) = input.map { line -> line
         .split(",")

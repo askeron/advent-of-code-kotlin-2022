@@ -1,14 +1,13 @@
+import Point.Companion.DOWN
+import Point.Companion.LEFT
+import Point.Companion.RIGHT
+import Point.Companion.UP
+
 class Day09 : Day<Int>(13, 1, 6236, 2449) {
     private fun parseInput(input: List<String>): List<Point> {
         return input.map { it.split(" ").toPair() }
-            .map {
-                when(it.first) {
-                    "L" -> Point(-1,0)
-                    "R" -> Point(1,0)
-                    "U" -> Point(0,1)
-                    "D" -> Point(0,-1)
-                    else -> error("invalid direction")
-                } to it.second.toInt()
+            .map { (a,b) ->
+                mapOf("L" to LEFT, "R" to RIGHT, "U" to UP, "D" to DOWN)[a]!! to b.toInt()
             }
             .flatMap { (direction, count) -> (1..count).map { direction } }
     }

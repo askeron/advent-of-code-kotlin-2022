@@ -133,6 +133,13 @@ data class Point(val x: Int, val y: Int) {
     val neighbours by lazy { neighboursWithItself.filterNot { it == this } }
 
     val sign by lazy { Point(x.sign, y.sign) }
+
+    companion object {
+        val LEFT = Point(-1,0)
+        val RIGHT = Point(1,0)
+        val UP = Point(0,1)
+        val DOWN = Point(0,-1)
+    }
 }
 
 // helpers from 2021 END

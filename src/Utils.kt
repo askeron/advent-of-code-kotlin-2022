@@ -1,6 +1,7 @@
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+import kotlin.math.sign
 
 /**
  * Reads lines from the given input txt file.
@@ -130,6 +131,8 @@ data class Point(val x: Int, val y: Int) {
     ).map { this + it } }
 
     val neighbours by lazy { neighboursWithItself.filterNot { it == this } }
+
+    val sign by lazy { Point(x.sign, y.sign) }
 }
 
 // helpers from 2021 END

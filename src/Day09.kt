@@ -13,7 +13,7 @@ class Day09 : Day<Int>(13, 13, 1, 2) {
             .flatMap { (direction, count) -> (1..count).map { direction } }
     }
 
-    private class State {
+    private class StatePart1 {
         var head = Point(0,0)
         var tail = head
         val tailPositions = mutableSetOf(tail)
@@ -27,8 +27,26 @@ class Day09 : Day<Int>(13, 13, 1, 2) {
         }
     }
 
+    private class StatePart2 {
+        var parts = List(10) { SingleReference(Point(0,0)) }
+        val head = parts.first()
+        val lastTail = parts.last()
+        val pairs = parts.windowed(2).map { it.toPair() }
+        val tailPositions = mutableSetOf(lastTail.value)
+
+        fun moveHead(direction: Point) {
+            head.value = head.value + direction
+            pairs.forEach { (a,b) ->
+                if (b.value !in a.value.neighboursWithItself) {
+                    b.value = b.value + (a.value - b.value).sign
+                }
+            }
+            tailPositions += lastTail.value
+        }
+    }
+
     override fun part1(input: List<String>): Int {
-        return State().also { state -> parseInput(input).forEach { state.moveHead(it) } }
+        return StatePart1().also { state -> parseInput(input).forEach { state.moveHead(it) } }
             .tailPositions.size
     }
 

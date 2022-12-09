@@ -14,7 +14,7 @@ class Day07 : Day<Long>(95437L, 24933642L, 1543140L, 1117448L) {
                 currentPath = getParentDirPath(currentPath)
             } else if (line.startsWith("$ cd ")) {
                 currentPath += "${line.removePrefix("$ cd ")}/"
-            } else if (line.elementAt(0).isDigit()) {
+            } else if (line.first().isDigit()) {
                 files += line.split(" ").toPair().let { File(currentPath, it.second, it.first.toLong()) }
             }
         }

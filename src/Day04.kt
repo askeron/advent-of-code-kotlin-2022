@@ -2,9 +2,9 @@ class Day04 : Day<Int>(2, 4, 588, 911) {
 
     private fun parseInput(input: List<String>) = input.map { line -> line
         .split(",")
-        .map { it.split('-').map { it.toInt() }.exactPair() }
+        .map { it.split('-').map { it.toInt() }.toPair() }
         .map { (a, b) ->  (a..b).toSet() }
-        .exactPair()
+        .toPair()
     }
 
     override fun part1(input: List<String>): Int {

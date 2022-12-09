@@ -31,7 +31,7 @@ fun <T> List<T>.singleValue(): T {
     return get(0)
 }
 
-fun <T> List<T>.exactPair(): Pair<T, T> {
+fun <T> List<T>.toPair(): Pair<T, T> {
     check(size == 2) { "list has not 2 but $size items" }
     return get(0) to get(1)
 }

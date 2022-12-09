@@ -15,7 +15,7 @@ class Day07 : Day<Long>(95437L, 24933642L, 1543140L, 1117448L) {
             } else if (line.startsWith("$ cd ")) {
                 currentPath += "${line.removePrefix("$ cd ")}/"
             } else if (line.elementAt(0).isDigit()) {
-                files += line.split(" ").exactPair().let { File(currentPath, it.second, it.first.toLong()) }
+                files += line.split(" ").toPair().let { File(currentPath, it.second, it.first.toLong()) }
             }
         }
         return files.distinctBy { it.path }

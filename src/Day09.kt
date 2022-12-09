@@ -1,4 +1,4 @@
-class Day09 : Day<Int>(13, 13, 1, 2) {
+class Day09 : Day<Int>(13, 1, 6236, 2449) {
     private fun parseInput(input: List<String>): List<Point> {
         return input.map { it.split(" ").toPair() }
             .map {
@@ -13,44 +13,31 @@ class Day09 : Day<Int>(13, 13, 1, 2) {
             .flatMap { (direction, count) -> (1..count).map { direction } }
     }
 
-    private class StatePart1 {
-        var head = Point(0,0)
-        var tail = head
-        val tailPositions = mutableSetOf(tail)
+    private class State(val tailCount: Int) {
+        val positions = Array(tailCount + 1) { Point(0,0) }
+        val lastTailPositions = mutableSetOf(positions.last())
 
         fun moveHead(direction: Point) {
-            head += direction
-            if (tail !in head.neighboursWithItself) {
-                tail += (head - tail).sign
+            positions[0] += direction
+            (0 until tailCount).forEach { i ->
+                if (positions[i+1] !in positions[i].neighboursWithItself) {
+                    positions[i+1] += (positions[i] - positions[i+1]).sign
+                }
             }
-            tailPositions += tail
+            lastTailPositions += positions.last()
         }
     }
 
-    private class StatePart2 {
-        var parts = List(10) { SingleReference(Point(0,0)) }
-        val head = parts.first()
-        val lastTail = parts.last()
-        val pairs = parts.windowed(2).map { it.toPair() }
-        val tailPositions = mutableSetOf(lastTail.value)
-
-        fun moveHead(direction: Point) {
-            head.value = head.value + direction
-            pairs.forEach { (a,b) ->
-                if (b.value !in a.value.neighboursWithItself) {
-                    b.value = b.value + (a.value - b.value).sign
-                }
-            }
-            tailPositions += lastTail.value
-        }
+    fun partCommon(input: List<String>, tailCount: Int): Int {
+        return State(tailCount).also { state -> parseInput(input).forEach { state.moveHead(it) } }
+            .lastTailPositions.size
     }
 
     override fun part1(input: List<String>): Int {
-        return StatePart1().also { state -> parseInput(input).forEach { state.moveHead(it) } }
-            .tailPositions.size
+        return partCommon(input, 1)
     }
 
     override fun part2(input: List<String>): Int {
-        return part1(input)
+        return partCommon(input, 9)
     }
 }

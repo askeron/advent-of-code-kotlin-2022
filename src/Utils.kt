@@ -56,8 +56,8 @@ fun <T> List<T>.transformUntilNoChange(transform: (List<T>) -> List<T>) : List<T
         }
     }
 
-fun List<String>.IntMatrixToPointMap() = flatMapIndexed { x, s ->
-    s.toCharArray().mapIndexed { y, c -> Point(x,y) to c.digitToInt() }
+fun List<String>.IntMatrixToPointMap() = flatMapIndexed { y, s ->
+    s.toCharArray().mapIndexed { x, c -> Point(x,y) to c.digitToInt() }
 }.toMap()
 
 fun Int.gaussSum() = (this * (this + 1)) / 2
@@ -96,8 +96,8 @@ fun Iterable<Point>.matrixString(pointChar: Char, noPointChar: Char): String =
     matrixString { x, y -> if (contains(Point(x, y))) pointChar else noPointChar }
 
 fun Iterable<Point>.matrixString(charFunction: (Int, Int) -> Char): String {
-    return (0..this.maxOf { it.x }).joinToString("\n") { x ->
-        (0..this.maxOf { it.y }).joinToString("") { y ->
+    return (0..this.maxOf { it.y }).joinToString("\n") { y ->
+        (0..this.maxOf { it.x }).joinToString("") { x ->
             charFunction.invoke(x, y).toString()
         }
     }
@@ -143,3 +143,14 @@ data class Point(val x: Int, val y: Int) {
 }
 
 // helpers from 2021 END
+
+// copied and then modified from takeWhile()
+inline fun <T> Iterable<T>.takeWhilePlusOne(predicate: (T) -> Boolean): List<T> {
+    val list = ArrayList<T>()
+    for (item in this) {
+        list.add(item)
+        if (!predicate(item))
+            break
+    }
+    return list
+}

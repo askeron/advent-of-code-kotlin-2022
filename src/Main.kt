@@ -8,7 +8,10 @@ fun main() {
         }
     }
 
+    val longRunningDays = listOf(8)
+
     (1..25).asSequence()
+        .filter { it !in longRunningDays }
         .mapNotNull { getDayInstance(it) }
         .forEach { it.run() }
 }

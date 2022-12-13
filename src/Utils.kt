@@ -1,6 +1,8 @@
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.sign
 
 /**
@@ -56,8 +58,10 @@ fun <T> List<T>.transformUntilNoChange(transform: (List<T>) -> List<T>) : List<T
         }
     }
 
-fun List<String>.IntMatrixToPointMap() = flatMapIndexed { y, s ->
-    s.toCharArray().mapIndexed { x, c -> Point(x,y) to c.digitToInt() }
+fun List<String>.IntMatrixToPointMap() = charMatrixToPointMap().map { (a, b) -> a to b.digitToInt() }.toMap()
+
+fun List<String>.charMatrixToPointMap() = flatMapIndexed { y, s ->
+    s.toCharArray().mapIndexed { x, c -> Point(x,y) to c }
 }.toMap()
 
 fun Int.gaussSum() = (this * (this + 1)) / 2
@@ -137,12 +141,52 @@ data class Point(val x: Int, val y: Int) {
     companion object {
         val LEFT = Point(-1,0)
         val RIGHT = Point(1,0)
-        val UP = Point(0,1)
-        val DOWN = Point(0,-1)
+        val UP = Point(0,-1)
+        val DOWN = Point(0,1)
     }
 }
 
 // helpers from 2021 END
+
+// from 2021 Day15
+fun <T> shortestPathByDijkstra(
+    edgesWithCosts: Set<Triple<T, T, Int>>,
+    start: T,
+    end: T,
+): Pair<List<T>, Int>? {
+    val costsMap = mutableMapOf<T, Int>()
+    val previousNodeMap = mutableMapOf<T, T>()
+    val edgesMap = edgesWithCosts.groupBy({ it.first }) { it.second to it.third }
+    val queue = LinkedList<T>()
+    val processed = mutableSetOf<T>()
+
+    costsMap[start] = 0
+    queue += start
+
+    while (queue.isNotEmpty()) {
+        val from = queue.minByOrNull { costsMap[it] ?: Int.MAX_VALUE }!!
+        queue.remove(from)
+        processed += from
+        val fromCosts = costsMap[from] ?: Int.MAX_VALUE
+        edgesMap[from]?.forEach { edge ->
+            val to = edge.first
+            val toCosts = fromCosts + edge.second
+            if ((costsMap[to] ?: Int.MAX_VALUE) > toCosts) {
+                costsMap[to] = toCosts
+                previousNodeMap[to] = from
+            }
+            if (to !in processed && to !in queue) {
+                queue += to
+            }
+        }
+    }
+
+    val reversedPath = mutableListOf(end)
+    while (reversedPath.last() != start) {
+        reversedPath += previousNodeMap[reversedPath.last()] ?: return null
+    }
+    return reversedPath.toList().reversed() to costsMap[end]!!
+}
 
 // copied and then modified from takeWhile()
 inline fun <T> Iterable<T>.takeWhilePlusOne(predicate: (T) -> Boolean): List<T> {

@@ -12,14 +12,9 @@ class Day10 : Day<String>("13140", """
 #....#.#..#..#.#....#..#.#..#.#....#....
 ####.#..#..##..#....###...##..#....####.""".removePrefix("\n")
 ) {
-    private fun getXValueForCycle(input: List<String>): List<Int> = mutableListOf(1).also {
-        input.forEach { line ->
-            it += it.last()
-            if (line.startsWith("addx")) {
-                it += it.last() + line.split(" ")[1].toInt()
-            }
-        }
-    }.toList()
+    private fun getXValueForCycle(input: List<String>): List<Int> = input
+        .flatMap { if (it == "noop") listOf(0) else listOf(0, it.split(" ")[1].toInt()) }
+        .scan(1, Int::plus)
 
     override fun part1(input: List<String>): String {
         val xValueForCycle = getXValueForCycle(input)

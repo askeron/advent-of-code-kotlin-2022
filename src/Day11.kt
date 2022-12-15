@@ -4,8 +4,8 @@ class Day11 : Day<Long>(10605, 2713310158L, 58056, 15048718170L) {
         private val items: MutableList<Long>,
         private val operation: (Long) -> Long,
         private val divisibleForTest: Int,
-        private val monkeyForTrue: Int,
-        private val monkeyForFalse: Int,
+        private val monkeyIndexForTrue: Int,
+        private val monkeyIndexForFalse: Int,
     ) {
         var itemsInspectedCount = 0
 
@@ -13,11 +13,8 @@ class Day11 : Day<Long>(10605, 2713310158L, 58056, 15048718170L) {
             items.forEach { value ->
                 itemsInspectedCount++
                 val newValue = (operation.invoke(value) / reliefFactor) % monkeys.map { it.divisibleForTest }.fold(1) { a, b -> a * b }
-                if (newValue % divisibleForTest == 0L) {
-                    monkeyForTrue
-                } else {
-                    monkeyForFalse
-                }.also { monkeys[it].items += newValue }
+                val newMonkeyIndex = if (newValue % divisibleForTest == 0L) monkeyIndexForTrue else monkeyIndexForFalse
+                monkeys[newMonkeyIndex].items += newValue
             }
             items.clear()
         }
@@ -29,19 +26,15 @@ class Day11 : Day<Long>(10605, 2713310158L, 58056, 15048718170L) {
                 Monkey(
                     items = lines[1].substringAfter(':').split(',').map { it.trim().toLong() }.toMutableList(),
                     operation = lines[2].split(' ').takeLast(2).toPair().let { (a, b) ->
-                        if (a == "*" && b == "old") {
-                            { it * it }
-                        } else if (a == "*") {
-                            { it * b.toInt() }
-                        } else if (a == "+") {
-                            { it + b.toInt() }
-                        } else {
-                            error("no operation found")
+                        when (a) {
+                            "+" -> { x -> x + (b.toLongOrNull() ?: x) }
+                            "*" -> { x -> x * (b.toLongOrNull() ?: x) }
+                            else -> error("not implemented")
                         }
                     },
                     divisibleForTest = lines[3].split(' ').last().toInt(),
-                    monkeyForTrue = lines[4].split(' ').last().toInt(),
-                    monkeyForFalse = lines[5].split(' ').last().toInt(),
+                    monkeyIndexForTrue = lines[4].split(' ').last().toInt(),
+                    monkeyIndexForFalse = lines[5].split(' ').last().toInt(),
                 )
             }
     }

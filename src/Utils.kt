@@ -198,3 +198,23 @@ inline fun <T> Iterable<T>.takeWhilePlusOne(predicate: (T) -> Boolean): List<T> 
     }
     return list
 }
+
+fun <T> Iterable<T>.split(seperator: T): List<List<T>> = split { it == seperator }
+
+fun <T> Iterable<T>.split(predicate: (T) -> Boolean): List<List<T>> {
+    val itemsLeft = this.toMutableList()
+    if (itemsLeft.isEmpty()) return emptyList()
+    val result = mutableListOf<List<T>>()
+    val currentSegment = mutableListOf<T>()
+    while (itemsLeft.isNotEmpty()) {
+        val item = itemsLeft.removeAt(0)
+        if (predicate.invoke(item)) {
+            result += currentSegment.toList()
+            currentSegment.clear()
+        } else {
+            currentSegment += item
+        }
+    }
+    result += currentSegment.toList()
+    return result.toList()
+}

@@ -1,10 +1,6 @@
 class Day01 : Day<Int>(24000, 45000, 68802, 205370) {
-    fun getData(input: List<String>): List<List<Int>> = input.joinToString("\n")
-        .split("\n\n")
-        .map { elf ->
-            elf.lines()
-                .map { it.toInt() }
-        }
+    private fun getData(input: List<String>): List<List<Int>> = input.split { it.isEmpty() }
+        .map { elf -> elf.map { it.toInt() } }
 
     override fun part1(input: List<String>): Int {
         return getData(input).maxOf { it.sum() }

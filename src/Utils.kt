@@ -199,6 +199,11 @@ inline fun <T> Iterable<T>.takeWhilePlusOne(predicate: (T) -> Boolean): List<T> 
     return list
 }
 
+fun <T> List<T>.splitInHalf(): Pair<List<T>, List<T>> {
+    check(size % 2 == 0) { "not an even size" }
+    return take(size / 2) to drop(size / 2)
+}
+
 fun <T> Iterable<T>.split(seperator: T): List<List<T>> = split { it == seperator }
 
 fun <T> Iterable<T>.split(predicate: (T) -> Boolean): List<List<T>> {
